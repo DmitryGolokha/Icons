@@ -1,1 +1,227 @@
-# Icons
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>МегаКом — Анимация</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at 50% 40%, #2a0a0a 0%, #0d0000 60%, #000 100%);
+            overflow: hidden;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        /* Контейнер для всей сцены */
+        .scene {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Светящиеся кольца вокруг иконки */
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: #ff2b2b;
+            border-right-color: #ff2b2b;
+            animation: spin 3s linear infinite;
+            filter: drop-shadow(0 0 15px #ff2b2b);
+        }
+
+        .ring-1 {
+            width: 260px;
+            height: 260px;
+            animation-duration: 3s;
+        }
+
+        .ring-2 {
+            width: 300px;
+            height: 300px;
+            border-top-color: #ff6b6b;
+            border-right-color: transparent;
+            border-bottom-color: #ff6b6b;
+            animation-duration: 5s;
+            animation-direction: reverse;
+            opacity: 0.7;
+        }
+
+        .ring-3 {
+            width: 340px;
+            height: 340px;
+            border-top-color: #b00000;
+            border-left-color: #b00000;
+            animation-duration: 7s;
+            opacity: 0.5;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Сама иконка (логотип) */
+        .mega-icon {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ff4040, #b00000 60%, #6a0000 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 80px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            box-shadow:
+                0 0 40px rgba(255, 43, 43, 0.6),
+                inset 0 0 30px rgba(0, 0, 0, 0.4);
+            z-index: 2;
+            animation: revealIcon 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                       pulseIcon 3s ease-in-out 1.2s infinite;
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        /* Появление иконки (с поворотом) */
+        @keyframes revealIcon {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(-180deg);
+            }
+            60% {
+                opacity: 1;
+                transform: scale(1.1) rotate(10deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        /* Пульсация иконки */
+        @keyframes pulseIcon {
+            0%, 100% {
+                box-shadow:
+                    0 0 40px rgba(255, 43, 43, 0.6),
+                    inset 0 0 30px rgba(0, 0, 0, 0.4);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow:
+                    0 0 70px rgba(255, 43, 43, 0.9),
+                    inset 0 0 30px rgba(0, 0, 0, 0.4);
+                transform: scale(1.05);
+            }
+        }
+
+        /* Текст "МЕГАКОМ" */
+        .mega-title {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 8px;
+            color: #ff2b2b;
+            text-shadow: 0 0 20px rgba(255, 43, 43, 0.8);
+            opacity: 0;
+            animation: fadeInText 1s ease 1.8s forwards;
+        }
+
+        @keyframes fadeInText {
+            to { opacity: 1; }
+        }
+
+        /* Летящие частицы */
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ff2b2b;
+            top: 50%;
+            left: 50%;
+            pointer-events: none;
+            animation: flyOut 2s ease-out infinite;
+        }
+
+        @keyframes flyOut {
+            0% {
+                transform: translate(-50%, -50%) rotate(var(--angle)) translateX(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(var(--angle)) translateX(200px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Вспышка при загрузке */
+        .flash {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #fff;
+            opacity: 0;
+            pointer-events: none;
+            animation: flashOut 0.6s ease-out forwards;
+        }
+
+        @keyframes flashOut {
+            0% { opacity: 0.7; }
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Вспышка -->
+    <div class="flash"></div>
+
+    <div class="scene">
+        <!-- Светящиеся кольца -->
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+
+        <!-- Логотип (замените букву "М" на <img>, если нужно) -->
+        <div class="mega-icon">М</div>
+
+        <!-- Название -->
+        <div class="mega-title">МЕГАКОМ</div>
+    </div>
+
+    <script>
+        // Создаем летящие частицы
+        const scene = document.querySelector('.scene');
+        const particleCount = 12;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            const angle = (360 / particleCount) * i;
+            particle.style.setProperty('--angle', angle + 'deg');
+            particle.style.animationDelay = (i * 0.15) + 's';
+            scene.appendChild(particle);
+        }
+    </script>
+
+</body>
+</html>

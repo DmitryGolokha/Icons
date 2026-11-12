@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>МегаКом — Анимация</title>
+    <title>Мега-Ком — Анимация</title>
     <style>
         * {
             margin: 0;
@@ -129,17 +129,18 @@
             }
         }
 
-        /* Текст "МЕГАКОМ" */
+        /* Текст "Мега-Ком" */
         .mega-title {
             position: absolute;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 24px;
+            font-size: 22px;          /* чуть меньше, чтобы влезло с дефисом */
             font-weight: 600;
-            letter-spacing: 8px;
+            letter-spacing: 3px;      /* уменьшили интервал, чтобы дефис не разрывал слово */
             color: #ff2b2b;
             text-shadow: 0 0 20px rgba(255, 43, 43, 0.8);
+            white-space: nowrap;      /* запрещаем перенос строки */
             opacity: 0;
             animation: fadeInText 1s ease 1.8s forwards;
         }
@@ -205,7 +206,7 @@
         <div class="mega-icon">М</div>
 
         <!-- Название -->
-        <div class="mega-title">МЕГАКОМ</div>
+        <div class="mega-title">Мега-Ком</div>
     </div>
 
     <script>

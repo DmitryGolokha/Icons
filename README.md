@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мега-Ком — Анимация</title>
+    <title>Мега-Ком — Анимация Логотипа</title>
     <style>
         * {
             margin: 0;
@@ -16,6 +16,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            /* Темный фон, чтобы светящиеся кольца и частицы смотрелись круто */
             background: radial-gradient(circle at 50% 40%, #2a0a0a 0%, #0d0000 60%, #000 100%);
             overflow: hidden;
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -24,8 +25,8 @@
         /* Контейнер для всей сцены */
         .scene {
             position: relative;
-            width: 400px;
-            height: 400px;
+            width: 500px;
+            height: 500px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -43,14 +44,14 @@
         }
 
         .ring-1 {
-            width: 260px;
-            height: 260px;
+            width: 340px;
+            height: 340px;
             animation-duration: 3s;
         }
 
         .ring-2 {
-            width: 300px;
-            height: 300px;
+            width: 400px;
+            height: 400px;
             border-top-color: #ff6b6b;
             border-right-color: transparent;
             border-bottom-color: #ff6b6b;
@@ -60,8 +61,8 @@
         }
 
         .ring-3 {
-            width: 340px;
-            height: 340px;
+            width: 460px;
+            height: 460px;
             border-top-color: #b00000;
             border-left-color: #b00000;
             animation-duration: 7s;
@@ -73,39 +74,37 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Сама иконка (логотип) */
-        .mega-icon {
+        /* Контейнер для логотипа */
+        .logo-wrapper {
             position: relative;
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #ff4040, #b00000 60%, #6a0000 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 80px;
-            font-weight: 800;
-            letter-spacing: -2px;
-            box-shadow:
-                0 0 40px rgba(255, 43, 43, 0.6),
-                inset 0 0 30px rgba(0, 0, 0, 0.4);
             z-index: 2;
-            animation: revealIcon 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards,
-                       pulseIcon 3s ease-in-out 1.2s infinite;
+            /* Настройте ширину, чтобы логотип вписался в кольца */
+            width: 280px; 
             opacity: 0;
             transform: scale(0);
+            /* Анимация появления и последующей пульсации */
+            animation: revealLogo 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                       pulseLogo 3s ease-in-out 1.2s infinite;
         }
 
-        /* Появление иконки (с поворотом) */
-        @keyframes revealIcon {
+        /* Сам логотип */
+        .logo-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+            /* Добавляем легкое свечение, чтобы черный логотип было видно на темном фоне */
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
+        }
+
+        /* Появление логотипа (с поворотом) */
+        @keyframes revealLogo {
             0% {
                 opacity: 0;
-                transform: scale(0) rotate(-180deg);
+                transform: scale(0) rotate(-20deg);
             }
             60% {
                 opacity: 1;
-                transform: scale(1.1) rotate(10deg);
+                transform: scale(1.05) rotate(3deg);
             }
             100% {
                 opacity: 1;
@@ -113,40 +112,16 @@
             }
         }
 
-        /* Пульсация иконки */
-        @keyframes pulseIcon {
+        /* Пульсация логотипа */
+        @keyframes pulseLogo {
             0%, 100% {
-                box-shadow:
-                    0 0 40px rgba(255, 43, 43, 0.6),
-                    inset 0 0 30px rgba(0, 0, 0, 0.4);
                 transform: scale(1);
+                filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
             }
             50% {
-                box-shadow:
-                    0 0 70px rgba(255, 43, 43, 0.9),
-                    inset 0 0 30px rgba(0, 0, 0, 0.4);
-                transform: scale(1.05);
+                transform: scale(1.03);
+                filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.4));
             }
-        }
-
-        /* Текст "Мега-Ком" */
-        .mega-title {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 22px;          /* чуть меньше, чтобы влезло с дефисом */
-            font-weight: 600;
-            letter-spacing: 3px;      /* уменьшили интервал, чтобы дефис не разрывал слово */
-            color: #ff2b2b;
-            text-shadow: 0 0 20px rgba(255, 43, 43, 0.8);
-            white-space: nowrap;      /* запрещаем перенос строки */
-            opacity: 0;
-            animation: fadeInText 1s ease 1.8s forwards;
-        }
-
-        @keyframes fadeInText {
-            to { opacity: 1; }
         }
 
         /* Летящие частицы */
@@ -169,7 +144,7 @@
                 opacity: 1;
             }
             100% {
-                transform: translate(-50%, -50%) rotate(var(--angle)) translateX(200px) scale(0);
+                transform: translate(-50%, -50%) rotate(var(--angle)) translateX(250px) scale(0);
                 opacity: 0;
             }
         }
@@ -186,7 +161,7 @@
         }
 
         @keyframes flashOut {
-            0% { opacity: 0.7; }
+            0% { opacity: 0.5; }
             100% { opacity: 0; }
         }
     </style>
@@ -202,11 +177,11 @@
         <div class="ring ring-2"></div>
         <div class="ring ring-3"></div>
 
-        <!-- Логотип (замените букву "М" на <img>, если нужно) -->
-        <div class="mega-icon">М</div>
-
-        <!-- Название -->
-        <div class="mega-title">Мега-Ком</div>
+        <!-- Логотип -->
+        <div class="logo-wrapper">
+            <!-- ЗАМЕНИТЕ ССЫЛКУ В src НА ПУТЬ К ВАШЕМУ ЛОГОТИПУ -->
+            <img src="ВАШ_ПУТЬ_К_ЛОГОТИПУ.png" alt="Мега-Ком">
+        </div>
     </div>
 
     <script>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мега-Ком — Анимация Логотипа</title>
+    <title>Мега-Ком — Анимация Логотипа (Светлая тема)</title>
     <style>
         * {
             margin: 0;
@@ -16,7 +16,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: radial-gradient(circle at 50% 40%, #2a0a0a 0%, #0d0000 60%, #000 100%);
+            /* Светлый, слегка сероватый фон для контраста с белым логотипом */
+            background: radial-gradient(circle at 50% 40%, #ffffff 0%, #f5f5f5 60%, #e8e8e8 100%);
             overflow: hidden;
             font-family: 'Segoe UI', Arial, sans-serif;
         }
@@ -30,33 +31,39 @@
             align-items: center;
         }
 
-        /* Светящиеся кольца */
+        /* Светящиеся кольца (сделали их более строгими) */
         .ring {
             position: absolute;
             border-radius: 50%;
             border: 2px solid transparent;
-            border-top-color: #ff2b2b;
-            border-right-color: #ff2b2b;
+            border-top-color: #c50000; /* Фирменный красный */
+            border-right-color: #c50000;
             animation: spin 3s linear infinite;
-            filter: drop-shadow(0 0 15px #ff2b2b);
         }
 
-        .ring-1 { width: 340px; height: 340px; animation-duration: 3s; }
+        .ring-1 { 
+            width: 340px; 
+            height: 340px; 
+            animation-duration: 3s; 
+            opacity: 0.8;
+        }
         .ring-2 { 
-            width: 400px; height: 400px; 
-            border-top-color: #ff6b6b; 
+            width: 400px; 
+            height: 400px; 
+            border-top-color: #ff7b7b; 
             border-right-color: transparent; 
-            border-bottom-color: #ff6b6b; 
+            border-bottom-color: #ff7b7b; 
             animation-duration: 5s; 
             animation-direction: reverse; 
-            opacity: 0.7; 
+            opacity: 0.6; 
         }
         .ring-3 { 
-            width: 460px; height: 460px; 
-            border-top-color: #b00000; 
-            border-left-color: #b00000; 
+            width: 460px; 
+            height: 460px; 
+            border-top-color: #900000; 
+            border-left-color: #900000; 
             animation-duration: 7s; 
-            opacity: 0.5; 
+            opacity: 0.4; 
         }
 
         @keyframes spin {
@@ -68,9 +75,10 @@
         .logo-wrapper {
             position: relative;
             z-index: 2;
-            width: 320px; /* Размер логотипа. Если нужно больше, увеличьте число */
+            width: 320px; /* Размер логотипа */
             opacity: 0;
             transform: scale(0);
+            /* Анимация появления и пульсации */
             animation: revealLogo 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards,
                        pulseLogo 3s ease-in-out 1.2s infinite;
         }
@@ -79,8 +87,8 @@
             width: 100%;
             height: auto;
             display: block;
-            /* Свечение вокруг логотипа, чтобы черные буквы были видны на темном фоне */
-            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+            /* Легкая, аккуратная тень для объема на светлом фоне */
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
         }
 
         @keyframes revealLogo {
@@ -90,18 +98,24 @@
         }
 
         @keyframes pulseLogo {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3)); }
-            50% { transform: scale(1.03); filter: drop-shadow(0 0 35px rgba(255, 255, 255, 0.6)); }
+            0%, 100% { 
+                transform: scale(1); 
+                filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1)); 
+            }
+            50% { 
+                transform: scale(1.03); 
+                filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.15)); 
+            }
         }
 
-        /* Частицы */
+        /* Летящие частицы */
         .particle {
             position: absolute;
-            width: 6px;
-            height: 6px;
-            background: #ff6b6b;
+            width: 8px;
+            height: 8px;
+            background: #c50000; /* Красный цвет */
             border-radius: 50%;
-            box-shadow: 0 0 10px #ff2b2b;
+            box-shadow: 0 2px 5px rgba(197, 0, 0, 0.3);
             top: 50%;
             left: 50%;
             pointer-events: none;
@@ -113,7 +127,7 @@
             100% { transform: translate(-50%, -50%) rotate(var(--angle)) translateX(250px) scale(0); opacity: 0; }
         }
 
-        /* Вспышка */
+        /* Вспышка при загрузке (сделали чуть мягче) */
         .flash {
             position: fixed;
             top: 0; left: 0;
@@ -125,7 +139,7 @@
         }
 
         @keyframes flashOut {
-            0% { opacity: 0.5; }
+            0% { opacity: 0.8; }
             100% { opacity: 0; }
         }
     </style>

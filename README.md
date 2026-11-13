@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мега-Ком — Анимация Логотипа (Светлая тема)</title>
+    <!-- Принудительно указываем светлую тему для браузера -->
+    <meta name="color-scheme" content="light">
+    <title>Мега-Ком — Анимация Логотипа</title>
     <style>
+        /* Еще одна страховка от темной темы */
+        :root {
+            color-scheme: light;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -16,8 +23,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Светлый, слегка сероватый фон для контраста с белым логотипом */
-            background: radial-gradient(circle at 50% 40%, #ffffff 0%, #f5f5f5 60%, #e8e8e8 100%);
+            /* Светлый фон с принудительным флагом !important */
+            background: radial-gradient(circle at 50% 40%, #ffffff 0%, #f5f5f5 60%, #e8e8e8 100%) !important;
+            background-color: #f5f5f5 !important;
             overflow: hidden;
             font-family: 'Segoe UI', Arial, sans-serif;
         }
@@ -31,25 +39,18 @@
             align-items: center;
         }
 
-        /* Светящиеся кольца (сделали их более строгими) */
         .ring {
             position: absolute;
             border-radius: 50%;
             border: 2px solid transparent;
-            border-top-color: #c50000; /* Фирменный красный */
+            border-top-color: #c50000;
             border-right-color: #c50000;
             animation: spin 3s linear infinite;
         }
 
-        .ring-1 { 
-            width: 340px; 
-            height: 340px; 
-            animation-duration: 3s; 
-            opacity: 0.8;
-        }
+        .ring-1 { width: 340px; height: 340px; animation-duration: 3s; opacity: 0.8; }
         .ring-2 { 
-            width: 400px; 
-            height: 400px; 
+            width: 400px; height: 400px; 
             border-top-color: #ff7b7b; 
             border-right-color: transparent; 
             border-bottom-color: #ff7b7b; 
@@ -58,8 +59,7 @@
             opacity: 0.6; 
         }
         .ring-3 { 
-            width: 460px; 
-            height: 460px; 
+            width: 460px; height: 460px; 
             border-top-color: #900000; 
             border-left-color: #900000; 
             animation-duration: 7s; 
@@ -71,14 +71,12 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Контейнер для картинки логотипа */
         .logo-wrapper {
             position: relative;
             z-index: 2;
-            width: 320px; /* Размер логотипа */
+            width: 320px;
             opacity: 0;
             transform: scale(0);
-            /* Анимация появления и пульсации */
             animation: revealLogo 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards,
                        pulseLogo 3s ease-in-out 1.2s infinite;
         }
@@ -87,7 +85,6 @@
             width: 100%;
             height: auto;
             display: block;
-            /* Легкая, аккуратная тень для объема на светлом фоне */
             filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
         }
 
@@ -108,12 +105,11 @@
             }
         }
 
-        /* Летящие частицы */
         .particle {
             position: absolute;
             width: 8px;
             height: 8px;
-            background: #c50000; /* Красный цвет */
+            background: #c50000;
             border-radius: 50%;
             box-shadow: 0 2px 5px rgba(197, 0, 0, 0.3);
             top: 50%;
@@ -127,7 +123,6 @@
             100% { transform: translate(-50%, -50%) rotate(var(--angle)) translateX(250px) scale(0); opacity: 0; }
         }
 
-        /* Вспышка при загрузке (сделали чуть мягче) */
         .flash {
             position: fixed;
             top: 0; left: 0;
@@ -154,7 +149,7 @@
         <div class="ring ring-3"></div>
 
         <div class="logo-wrapper">
-            <!-- ВНИМАНИЕ: ЗАМЕНИТЕ "logo.png" НА ВАШЕ ИМЯ ФАЙЛА ИЛИ ПОЛНЫЙ ПУТЬ -->
+            <!-- Укажите правильный путь к вашему логотипу -->
             <img src="logo.png" alt="Мега-Ком">
         </div>
     </div>

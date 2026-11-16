@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light">
-    <title>Мега-Ком — Анимация с бликом</title>
+    <title>Мега-Ком — Выразительный блик</title>
     
     <style>
         /* --- ПОДКЛЮЧАЕМ ВАШ ШРИФТ --- */
@@ -33,35 +33,39 @@
             align-items: center;
             gap: 15px;
             
-            /* ДОБАВЛЕНО: относительное позиционирование для блика и обрезка лишнего */
             position: relative;
-            overflow: hidden; 
-            padding: 10px 20px; /* Отступы, чтобы блик было видно по краям */
+            overflow: hidden; /* Обрезаем блик по краям */
+            padding: 10px 20px; 
 
-            /* Легкая пульсация после сборки */
             animation: pulseFinal 3s ease-in-out 2s infinite;
         }
 
-        /* --- БЛИК (ПСЕВДОЭЛЕМЕНТ) --- */
+        /* --- ВЫРАЗИТЕЛЬНЫЙ БЛИК --- */
         .logo-container::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: -150%; /* Начинаем за левым краем */
-            width: 50%;
-            height: 100%;
-            /* Градиент от прозрачного к белому и обратно */
+            top: -20%;
+            left: -150%; 
+            width: 60%; /* Сделали блик шире */
+            height: 140%; /* Чуть выше логотипа для лучшего эффекта */
+            
+            /* Более плотный и яркий градиент */
             background: linear-gradient(
                 90deg,
                 rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.6) 50%,
+                rgba(255, 255, 255, 0.9) 50%, /* Яркость 90% */
                 rgba(255, 255, 255, 0) 100%
             );
-            transform: skewX(-25deg); /* Наклоняем блик */
-            pointer-events: none; /* Чтобы не мешал кликам */
+            transform: skewX(-25deg); 
+            pointer-events: none; 
             
-            /* Запускаем блик с задержкой 2 секунды (когда буквы уже собрались) */
-            animation: shine 4s infinite 2s; 
+            /* Эффект наложения (делает черные буквы светлее в момент прохода) */
+            mix-blend-mode: overlay; 
+            /* Легкое размытие, чтобы блик был мягким */
+            filter: blur(3px); 
+
+            /* Запускаем чуть чаще (каждые 3 секунды) */
+            animation: shine 3s infinite 2s; 
         }
 
         /* --- ИКОНКА --- */
@@ -69,7 +73,6 @@
             height: 65px; 
             width: auto;
             opacity: 0;
-            /* Тень сделает иконку объемной на любом фоне */
             filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.1));
             animation: slideInLeft 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
@@ -117,19 +120,17 @@
             50% { transform: scale(1.02); }
         }
 
-        /* --- НОВАЯ АНИМАЦИЯ БЛИКА --- */
+        /* --- АНИМАЦИЯ БЛИКА --- */
         @keyframes shine {
-            0% { left: -150%; } /* Стоит слева за экраном */
-            15% { left: 150%; } /* Быстро пробегает вправо */
-            100% { left: 150%; } /* Ждет, пока не начнется следующий цикл */
+            0% { left: -150%; }
+            20% { left: 150%; } /* Немного замедлили проход для выразительности */
+            100% { left: 150%; } 
         }
     </style>
 </head>
 <body>
 
     <div class="logo-container">
-        
-        <!-- ВАЖНО: Убедитесь, что файл icon.png имеет ПРОЗРАЧНЫЙ фон -->
         <img src="icon.png" class="logo-icon" alt="Mega-Kom Icon">
 
         <div class="logo-text">
@@ -142,7 +143,6 @@
             <span>о</span>
             <span>м</span>
         </div>
-        
     </div>
 
 </body>

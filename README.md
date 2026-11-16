@@ -33,7 +33,7 @@
             align-items: center;
             gap: 15px;
             padding: 10px 20px;
-            animation: pulseFinal 4s ease-in-out 3s infinite;
+            animation: pulseFinal 4s ease-in-out 5s infinite; /* Пульсация включается позже */
         }
 
         /* --- ИКОНКА И ЕЕ СКАНИРОВАНИЕ --- */
@@ -57,11 +57,12 @@
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
             
+            /* ДЕЛАЕМ ЛУЧ ШИРЕ И ЯРЧЕ */
             background: linear-gradient(90deg, 
                 transparent 0%, 
-                transparent 40%, 
+                transparent 20%, 
                 rgba(255, 255, 255, 1) 50%, 
-                transparent 60%, 
+                transparent 80%, 
                 transparent 100%
             );
             background-size: 300% 100%;
@@ -75,8 +76,7 @@
             -webkit-mask-position: center;
             mask-position: center;
             
-            /* Управляем и движением, и прозрачностью в одной анимации */
-            animation: scanEffect 2s linear infinite 2.5s;
+            animation: scanEffect 5s linear infinite 2.5s; /* Длительность 5 сек */
             pointer-events: none;
             opacity: 0; 
         }
@@ -114,9 +114,9 @@
             
             background: linear-gradient(90deg, 
                 transparent 0%, 
-                transparent 40%, 
+                transparent 20%, 
                 rgba(255, 255, 255, 1) 50%, 
-                transparent 60%, 
+                transparent 80%, 
                 transparent 100%
             );
             background-size: 300% 100%;
@@ -126,7 +126,7 @@
             color: transparent;
             -webkit-text-fill-color: transparent;
             
-            animation: scanEffect 2s linear infinite 2.5s;
+            animation: scanEffect 5s linear infinite 2.5s;
             pointer-events: none;
             opacity: 0;
         }
@@ -157,21 +157,27 @@
             50% { transform: scale(1.02); }
         }
 
-        /* НОВАЯ АНИМАЦИЯ СКАНЕРА */
+        /* НОВАЯ ПЛАВНАЯ АНИМАЦИЯ БЛИКА */
         @keyframes scanEffect {
+            /* 1. Луч полностью за левым краем и невидим */
             0% { 
-                background-position: 200% 0; /* Стоит справа за краем */
-                opacity: 0;                  /* Невидим */
+                background-position: 200% 0; 
+                opacity: 0;                  
             }
-            5% {
-                opacity: 1;                  /* Резко появляется (но он за краем, поэтому не видно вспышки) */
+            /* 2. Луч становится видимым, но все еще находится за краем (здесь нет вспышки) */
+            20% { 
+                background-position: 100% 0; 
+                opacity: 1;                  
             }
-            95% {
-                opacity: 1;                  /* Остается видимым */
+            /* 3. Луч медленно проходит через логотип (занимает 60% всего времени) */
+            80% { 
+                background-position: 0% 0; 
+                opacity: 1;                  
             }
+            /* 4. Луч уезжает за правый край и растворяется */
             100% { 
-                background-position: -100% 0; /* Уезжает влево за край */
-                opacity: 0;                   /* Исчезает */
+                background-position: -100% 0; 
+                opacity: 0;                   
             }
         }
     </style>

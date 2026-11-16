@@ -33,10 +33,10 @@
             align-items: center;
             gap: 15px;
             padding: 10px 20px;
-            animation: pulseFinal 4s ease-in-out 5s infinite; /* Пульсация включается позже */
+            animation: pulseFinal 4s ease-in-out 7s infinite;
         }
 
-        /* --- ИКОНКА И ЕЕ СКАНИРОВАНИЕ --- */
+        /* --- ИКОНКА --- */
         .icon-wrapper {
             position: relative;
             height: 65px;
@@ -57,15 +57,15 @@
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
             
-            /* ДЕЛАЕМ ЛУЧ ШИРЕ И ЯРЧЕ */
+            /* УМЕНЬШИЛИ ШИРИНУ ДО 60px И СДЕЛАЛИ СВЕТ МЯГЧЕ (0.8 вместо 1) */
             background: linear-gradient(90deg, 
                 transparent 0%, 
-                transparent 20%, 
-                rgba(255, 255, 255, 1) 50%, 
-                transparent 80%, 
+                rgba(255, 255, 255, 0.8) 50%, 
                 transparent 100%
             );
-            background-size: 300% 100%;
+            background-size: 60px 100%; /* Ширина блика */
+            background-repeat: no-repeat;
+            background-position: -60px 0; 
             
             -webkit-mask-image: url('icon.png');
             mask-image: url('icon.png');
@@ -76,12 +76,12 @@
             -webkit-mask-position: center;
             mask-position: center;
             
-            animation: scanEffect 5s linear infinite 2.5s; /* Длительность 5 сек */
+            animation: scanEffect 3.5s linear infinite 2.5s;
+            opacity: 0;
             pointer-events: none;
-            opacity: 0; 
         }
 
-        /* --- ТЕКСТ И ЕГО СКАНИРОВАНИЕ --- */
+        /* --- ТЕКСТ --- */
         .logo-text {
             display: flex;
             font-size: 48px; 
@@ -112,23 +112,24 @@
             line-height: 1;
             white-space: nowrap;
             
+            /* Тот же мягкий и узкий градиент */
             background: linear-gradient(90deg, 
                 transparent 0%, 
-                transparent 20%, 
-                rgba(255, 255, 255, 1) 50%, 
-                transparent 80%, 
+                rgba(255, 255, 255, 0.9) 50%, 
                 transparent 100%
             );
-            background-size: 300% 100%;
+            background-size: 60px 100%;
+            background-repeat: no-repeat;
+            background-position: -60px 0;
             
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             -webkit-text-fill-color: transparent;
             
-            animation: scanEffect 5s linear infinite 2.5s;
-            pointer-events: none;
+            animation: scanEffect 3.5s linear infinite 2.5s;
             opacity: 0;
+            pointer-events: none;
         }
 
         /* Задержки букв */
@@ -157,28 +158,12 @@
             50% { transform: scale(1.02); }
         }
 
-        /* НОВАЯ ПЛАВНАЯ АНИМАЦИЯ БЛИКА */
+        /* Анимация движения (обновлена под ширину 60px) */
         @keyframes scanEffect {
-            /* 1. Луч полностью за левым краем и невидим */
-            0% { 
-                background-position: 200% 0; 
-                opacity: 0;                  
-            }
-            /* 2. Луч становится видимым, но все еще находится за краем (здесь нет вспышки) */
-            20% { 
-                background-position: 100% 0; 
-                opacity: 1;                  
-            }
-            /* 3. Луч медленно проходит через логотип (занимает 60% всего времени) */
-            80% { 
-                background-position: 0% 0; 
-                opacity: 1;                  
-            }
-            /* 4. Луч уезжает за правый край и растворяется */
-            100% { 
-                background-position: -100% 0; 
-                opacity: 0;                   
-            }
+            0%   { background-position: -60px 0; opacity: 0; }
+            10%  { opacity: 1; } 
+            90%  { opacity: 1; } 
+            100% { background-position: calc(100% + 60px) 0; opacity: 0; }
         }
     </style>
 </head>

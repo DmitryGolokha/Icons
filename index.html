@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light">
-    <title>Мега-Ком — Сканирование по контуру</title>
+    <title>Мега-Ком — Сканирование</title>
     
     <style>
         /* --- ПОДКЛЮЧАЕМ ВАШ ШРИФТ --- */
@@ -33,7 +33,7 @@
             align-items: center;
             gap: 15px;
             padding: 10px 20px;
-            animation: pulseFinal 4s ease-in-out 2.5s infinite;
+            animation: pulseFinal 4s ease-in-out 3s infinite;
         }
 
         /* --- ИКОНКА И ЕЕ СКАНИРОВАНИЕ --- */
@@ -65,7 +65,6 @@
                 transparent 100%
             );
             background-size: 300% 100%;
-            background-position: 200% 0;
             
             -webkit-mask-image: url('icon.png');
             mask-image: url('icon.png');
@@ -76,14 +75,10 @@
             -webkit-mask-position: center;
             mask-position: center;
             
-            /* ИЗНАЧАЛЬНО СКРЫТ */
-            opacity: 0; 
-            
-            /* Сначала проявляем (через 2с), потом запускаем движение (через 2.2с) */
-            animation: 
-                showScanner 0.3s ease-out 2s forwards,
-                scanEffect 4s linear infinite 2.2s;
+            /* Управляем и движением, и прозрачностью в одной анимации */
+            animation: scanEffect 2s linear infinite 2.5s;
             pointer-events: none;
+            opacity: 0; 
         }
 
         /* --- ТЕКСТ И ЕГО СКАНИРОВАНИЕ --- */
@@ -125,21 +120,15 @@
                 transparent 100%
             );
             background-size: 300% 100%;
-            background-position: 200% 0;
             
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             -webkit-text-fill-color: transparent;
             
-            /* ИЗНАЧАЛЬНО СКРЫТ */
-            opacity: 0;
-            
-            /* Сначала проявляем (через 2с), потом запускаем движение (через 2.2с) */
-            animation: 
-                showScanner 0.3s ease-out 2s forwards,
-                scanEffect 4s linear infinite 2.2s;
+            animation: scanEffect 2s linear infinite 2.5s;
             pointer-events: none;
+            opacity: 0;
         }
 
         /* Задержки букв */
@@ -168,16 +157,22 @@
             50% { transform: scale(1.02); }
         }
 
-        /* Появление сканера */
-        @keyframes showScanner {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* Движение света */
+        /* НОВАЯ АНИМАЦИЯ СКАНЕРА */
         @keyframes scanEffect {
-            0% { background-position: 200% 0; }
-            100% { background-position: -100% 0; }
+            0% { 
+                background-position: 200% 0; /* Стоит справа за краем */
+                opacity: 0;                  /* Невидим */
+            }
+            5% {
+                opacity: 1;                  /* Резко появляется (но он за краем, поэтому не видно вспышки) */
+            }
+            95% {
+                opacity: 1;                  /* Остается видимым */
+            }
+            100% { 
+                background-position: -100% 0; /* Уезжает влево за край */
+                opacity: 0;                   /* Исчезает */
+            }
         }
     </style>
 </head>
@@ -185,7 +180,6 @@
 
     <div class="logo-container">
         
-        <!-- Обертка для иконки -->
         <div class="icon-wrapper">
             <img src="icon.png" class="logo-icon" alt="Mega-Kom Icon">
         </div>

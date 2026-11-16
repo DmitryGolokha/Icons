@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light">
-    <title>Мега-Ком — Анимация</title>
+    <title>Мега-Ком — Анимация с бликом</title>
     
     <style>
-        /* --- ИСПРАВЛЕННОЕ ПОДКЛЮЧЕНИЕ ШРИФТА --- */
+        /* --- ПОДКЛЮЧАЕМ ВАШ ШРИФТ --- */
         @font-face {
             font-family: 'Averta Cyrillic';
-            /* Файл шрифта должен лежать в той же папке, что и этот HTML-файл */
             src: url('Averta Cyrillic Bold.otf') format('opentype');
             font-weight: bold;
             font-style: normal;
@@ -33,7 +32,36 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            
+            /* ДОБАВЛЕНО: относительное позиционирование для блика и обрезка лишнего */
+            position: relative;
+            overflow: hidden; 
+            padding: 10px 20px; /* Отступы, чтобы блик было видно по краям */
+
+            /* Легкая пульсация после сборки */
             animation: pulseFinal 3s ease-in-out 2s infinite;
+        }
+
+        /* --- БЛИК (ПСЕВДОЭЛЕМЕНТ) --- */
+        .logo-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%; /* Начинаем за левым краем */
+            width: 50%;
+            height: 100%;
+            /* Градиент от прозрачного к белому и обратно */
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.6) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: skewX(-25deg); /* Наклоняем блик */
+            pointer-events: none; /* Чтобы не мешал кликам */
+            
+            /* Запускаем блик с задержкой 2 секунды (когда буквы уже собрались) */
+            animation: shine 4s infinite 2s; 
         }
 
         /* --- ИКОНКА --- */
@@ -41,8 +69,8 @@
             height: 65px; 
             width: auto;
             opacity: 0;
-            /* Пытаемся убрать светлый фон, если он там есть (работает только для белого/светлого фона) */
-            mix-blend-mode: multiply; 
+            /* Тень сделает иконку объемной на любом фоне */
+            filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.1));
             animation: slideInLeft 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
@@ -88,13 +116,20 @@
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.02); }
         }
+
+        /* --- НОВАЯ АНИМАЦИЯ БЛИКА --- */
+        @keyframes shine {
+            0% { left: -150%; } /* Стоит слева за экраном */
+            15% { left: 150%; } /* Быстро пробегает вправо */
+            100% { left: 150%; } /* Ждет, пока не начнется следующий цикл */
+        }
     </style>
 </head>
 <body>
 
     <div class="logo-container">
         
-        <!-- УБЕДИТЕСЬ, ЧТО КАРТИНКА ЛЕЖИТ В ТОЙ ЖЕ ПАПКЕ ИЛИ УКАЖИТЕ ПУТЬ -->
+        <!-- ВАЖНО: Убедитесь, что файл icon.png имеет ПРОЗРАЧНЫЙ фон -->
         <img src="icon.png" class="logo-icon" alt="Mega-Kom Icon">
 
         <div class="logo-text">

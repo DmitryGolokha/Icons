@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light">
-    <title>Мега-Ком — Премиум анимация</title>
+    <title>Mega-Kom — Tech Reveal</title>
     <style>
         :root { color-scheme: light; }
 
@@ -13,36 +13,56 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #ffffff !important; /* Чисто белый фон */
+            background-color: #f8f9fa !important;
             margin: 0;
             overflow: hidden;
+            font-family: sans-serif;
         }
 
-        /* Контейнер обрезает блик, чтобы он не выходил за пределы картинки */
-        .logo-container {
+        /* Контейнер для логотипа */
+        .logo-scene {
             position: relative;
-            width: 400px; /* Ширина логотипа. Подстройте под свой размер */
-            overflow: hidden;
-            /* Анимация появления (всплытие с размытием) */
-            animation: revealLogo 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-            
-            /* Непрерывная пульсация после появления */
-            animation: revealLogo 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards,
-                       pulseLogo 3s ease-in-out 1.5s infinite;
-            opacity: 0;
-            transform: translateY(20px) scale(0.9);
-            filter: blur(10px);
+            /* Размеры контейнера подгоняем под логотип */
+            width: 600px; 
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .logo-container img {
+        /* Сам логотип (картинка) */
+        .logo-image {
             width: 100%;
             height: auto;
-            display: block;
+            object-fit: contain;
+            /* Изначально логотип невидим, затемняется и немного размыт */
+            opacity: 0;
+            filter: blur(10px) grayscale(100%) brightness(2);
+            transform: scale(0.95);
+            
+            /* Запускаем анимацию проявления */
+            animation: 
+                revealLogo 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                floatLogo 4s ease-in-out 1.5s infinite;
         }
 
-        /* СОЗДАЕМ БЛИК (эффект стекла) */
-        .logo-container::after {
-            content: "";
+        /* Эффект сканирующей линии */
+        .scanner {
+            position: absolute;
+            top: -10%;
+            left: 0;
+            width: 2px;
+            height: 120%;
+            background: #d10000; /* Красный цвет, как в лого */
+            box-shadow: 0 0 15px 5px rgba(209, 0, 0, 0.5);
+            opacity: 0;
+            z-index: 2;
+            /* Анимация прохода линии слева направо */
+            animation: scan 1.5s ease-in-out 0.2s forwards;
+        }
+
+        /* Блик поверх логотипа */
+        .shine {
             position: absolute;
             top: 0;
             left: -150%;
@@ -51,47 +71,82 @@
             background: linear-gradient(
                 90deg,
                 rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.8) 50%,
+                rgba(255, 255, 255, 0.7) 50%,
                 rgba(255, 255, 255, 0) 100%
             );
             transform: skewX(-25deg);
-            /* Блик запускается с задержкой, когда логотип уже появился */
-            animation: shine 4s infinite 1.5s; 
+            z-index: 3;
+            /* Блик запускается после того, как лого проявился */
+            animation: shine 1s ease-in-out 1.8s forwards;
+            pointer-events: none;
         }
 
-        /* Анимация появления */
+        /* Подсветка (свечение) позади логотипа */
+        .glow {
+            position: absolute;
+            width: 200px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(209,0,0,0.15) 0%, rgba(255,255,255,0) 70%);
+            z-index: 0;
+            opacity: 0;
+            transform: scale(0.5);
+            animation: glowUp 2s ease-out 1.5s forwards;
+        }
+
+        /* --- АНИМАЦИИ --- */
+
+        /* Проявление логотипа из размытия */
         @keyframes revealLogo {
             0% {
                 opacity: 0;
-                transform: translateY(20px) scale(0.9);
-                filter: blur(10px);
+                filter: blur(15px) grayscale(100%) brightness(2);
+                transform: scale(0.9);
             }
             100% {
                 opacity: 1;
-                transform: translateY(0) scale(1);
-                filter: blur(0);
+                filter: blur(0) grayscale(0) brightness(1);
+                transform: scale(1);
             }
         }
 
-        /* Легкая пульсация */
-        @keyframes pulseLogo {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
+        /* Проход сканирующей линии */
+        @keyframes scan {
+            0% { left: 0; opacity: 1; }
+            90% { left: 100%; opacity: 1; }
+            100% { left: 100%; opacity: 0; }
         }
 
-        /* Анимация пробегающего блика */
+        /* Блик */
         @keyframes shine {
             0% { left: -150%; }
-            20% { left: 150%; } /* Блик быстро пробегает */
-            100% { left: 150%; } /* Пауза перед следующим */
+            100% { left: 150%; }
+        }
+
+        /* Легкое парение логотипа (чтобы он не был статичным) */
+        @keyframes floatLogo {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* Появление свечения позади */
+        @keyframes glowUp {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1.5); }
         }
     </style>
 </head>
 <body>
 
-    <div class="logo-container">
-        <!-- ВСТАВЬТЕ ССЫЛКУ НА ВАШУ ОРИГИНАЛЬНУЮ КАРТИНКУ ЛОГОТИПА -->
-        <img src="logo.png" alt="Мега-Ком">
+    <div class="logo-scene">
+        <!-- Свечение позади -->
+        <div class="glow"></div>
+        
+        <!-- ВАЖНО: Замените ссылку ниже на путь к вашему горизонтальному логотипу -->
+        <img src="logo.svg" alt="Mega-Kom" class="logo-image">
+        
+        <!-- Сканер и блик -->
+        <div class="scanner"></div>
+        <div class="shine"></div>
     </div>
 
 </body>

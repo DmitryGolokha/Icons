@@ -33,10 +33,11 @@
             align-items: center;
             gap: 15px;
             padding: 10px 20px;
+            /* Пульсация запускается после блика */
             animation: pulseFinal 4s ease-in-out 7s infinite;
         }
 
-        /* --- ИКОНКА --- */
+        /* --- ИКОНКА (ВЫЕЗЖАЕТ СЛЕВА) --- */
         .icon-wrapper {
             position: relative;
             height: 65px;
@@ -48,22 +49,18 @@
             height: 65px; 
             width: auto;
             opacity: 0;
+            /* Анимация выезда слева */
             animation: slideInLeft 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
-        /* Слой света поверх иконки */
+        /* Блик для иконки */
         .icon-wrapper::after {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
             
-            /* УМЕНЬШИЛИ ШИРИНУ ДО 60px И СДЕЛАЛИ СВЕТ МЯГЧЕ (0.8 вместо 1) */
-            background: linear-gradient(90deg, 
-                transparent 0%, 
-                rgba(255, 255, 255, 0.8) 50%, 
-                transparent 100%
-            );
-            background-size: 60px 100%; /* Ширина блика */
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.8) 50%, transparent 100%);
+            background-size: 60px 100%;
             background-repeat: no-repeat;
             background-position: -60px 0; 
             
@@ -81,7 +78,7 @@
             pointer-events: none;
         }
 
-        /* --- ТЕКСТ --- */
+        /* --- ТЕКСТ (ВЫЕЗЖАЕТ СПРАВА) --- */
         .logo-text {
             display: flex;
             font-size: 48px; 
@@ -96,10 +93,21 @@
         .logo-text span {
             display: inline-block;
             opacity: 0;
-            animation: assembleLetter 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            /* Анимация выезда справа для букв */
+            animation: slideInRight 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
-        /* Слой сканирования для текста */
+        /* Задержки букв для эффекта "волны" при выезде */
+        .logo-text span:nth-child(1) { animation-delay: 0.1s; }
+        .logo-text span:nth-child(2) { animation-delay: 0.2s; }
+        .logo-text span:nth-child(3) { animation-delay: 0.3s; }
+        .logo-text span:nth-child(4) { animation-delay: 0.4s; }
+        .logo-text span:nth-child(5) { animation-delay: 0.5s; }
+        .logo-text span:nth-child(6) { animation-delay: 0.6s; }
+        .logo-text span:nth-child(7) { animation-delay: 0.7s; }
+        .logo-text span:nth-child(8) { animation-delay: 0.8s; }
+
+        /* Блик для текста */
         .logo-text::after {
             content: 'Мега-Ком';
             position: absolute;
@@ -112,12 +120,7 @@
             line-height: 1;
             white-space: nowrap;
             
-            /* Тот же мягкий и узкий градиент */
-            background: linear-gradient(90deg, 
-                transparent 0%, 
-                rgba(255, 255, 255, 0.9) 50%, 
-                transparent 100%
-            );
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.9) 50%, transparent 100%);
             background-size: 60px 100%;
             background-repeat: no-repeat;
             background-position: -60px 0;
@@ -132,25 +135,18 @@
             pointer-events: none;
         }
 
-        /* Задержки букв */
-        .logo-text span:nth-child(1) { animation-delay: 0.2s; --x: -40px; --y: -60px; --r: -20deg; }
-        .logo-text span:nth-child(2) { animation-delay: 0.3s; --x: 30px;  --y: 50px;  --r: 15deg; }
-        .logo-text span:nth-child(3) { animation-delay: 0.4s; --x: -50px; --y: 30px;  --r: -10deg; }
-        .logo-text span:nth-child(4) { animation-delay: 0.5s; --x: 40px;  --y: -40px; --r: 25deg; }
-        .logo-text span:nth-child(5) { animation-delay: 0.6s; --x: 0px;   --y: -70px; --r: 0deg; }
-        .logo-text span:nth-child(6) { animation-delay: 0.7s; --x: 50px;  --y: 30px;  --r: 20deg; }
-        .logo-text span:nth-child(7) { animation-delay: 0.8s; --x: -30px; --y: -50px; --r: -15deg; }
-        .logo-text span:nth-child(8) { animation-delay: 0.9s; --x: 60px;  --y: 0px;   --r: 10deg; }
-
         /* --- АНИМАЦИИ --- */
-        @keyframes assembleLetter {
-            0% { opacity: 0; transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(0.5); }
-            100% { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
+        
+        /* Появление иконки слева */
+        @keyframes slideInLeft {
+            0% { opacity: 0; transform: translateX(-100px); }
+            100% { opacity: 1; transform: translateX(0); }
         }
 
-        @keyframes slideInLeft {
-            0% { opacity: 0; transform: translateX(-80px) scale(0.8); }
-            100% { opacity: 1; transform: translateX(0) scale(1); }
+        /* Появление букв справа */
+        @keyframes slideInRight {
+            0% { opacity: 0; transform: translateX(100px); }
+            100% { opacity: 1; transform: translateX(0); }
         }
 
         @keyframes pulseFinal {
@@ -158,7 +154,7 @@
             50% { transform: scale(1.02); }
         }
 
-        /* Анимация движения (обновлена под ширину 60px) */
+        /* Движение блика */
         @keyframes scanEffect {
             0%   { background-position: -60px 0; opacity: 0; }
             10%  { opacity: 1; } 

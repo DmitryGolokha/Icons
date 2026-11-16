@@ -33,7 +33,7 @@
             align-items: center;
             gap: 15px;
             padding: 10px 20px;
-            animation: pulseFinal 4s ease-in-out 2s infinite;
+            animation: pulseFinal 4s ease-in-out 2.5s infinite;
         }
 
         /* --- ИКОНКА И ЕЕ СКАНИРОВАНИЕ --- */
@@ -51,25 +51,22 @@
             animation: slideInLeft 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
-        /* Слой света поверх иконки, который повторяет её форму */
+        /* Слой света поверх иконки */
         .icon-wrapper::after {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
             
-            /* Тонкая светящаяся линия */
             background: linear-gradient(90deg, 
                 transparent 0%, 
-                transparent 42%, 
+                transparent 40%, 
                 rgba(255, 255, 255, 1) 50%, 
-                transparent 58%, 
+                transparent 60%, 
                 transparent 100%
             );
             background-size: 300% 100%;
             background-position: 200% 0;
             
-            /* МАГИЯ: Маскируем свет формой самой картинки. 
-               Свет будет виден ТОЛЬКО там, где есть непрозрачные пиксели */
             -webkit-mask-image: url('icon.png');
             mask-image: url('icon.png');
             -webkit-mask-size: contain;
@@ -79,7 +76,13 @@
             -webkit-mask-position: center;
             mask-position: center;
             
-            animation: scanEffect 4s linear infinite 2s;
+            /* ИЗНАЧАЛЬНО СКРЫТ */
+            opacity: 0; 
+            
+            /* Сначала проявляем (через 2с), потом запускаем движение (через 2.2с) */
+            animation: 
+                showScanner 0.3s ease-out 2s forwards,
+                scanEffect 4s linear infinite 2.2s;
             pointer-events: none;
         }
 
@@ -101,7 +104,7 @@
             animation: assembleLetter 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
-        /* Слой сканирования для текста (клонируем текст для наложения) */
+        /* Слой сканирования для текста */
         .logo-text::after {
             content: 'Мега-Ком';
             position: absolute;
@@ -114,24 +117,28 @@
             line-height: 1;
             white-space: nowrap;
             
-            /* Тот же градиент света */
             background: linear-gradient(90deg, 
                 transparent 0%, 
-                transparent 42%, 
+                transparent 40%, 
                 rgba(255, 255, 255, 1) 50%, 
-                transparent 58%, 
+                transparent 60%, 
                 transparent 100%
             );
             background-size: 300% 100%;
             background-position: 200% 0;
             
-            /* Обрезаем градиент ровно по форме букв */
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             -webkit-text-fill-color: transparent;
             
-            animation: scanEffect 4s linear infinite 2s;
+            /* ИЗНАЧАЛЬНО СКРЫТ */
+            opacity: 0;
+            
+            /* Сначала проявляем (через 2с), потом запускаем движение (через 2.2с) */
+            animation: 
+                showScanner 0.3s ease-out 2s forwards,
+                scanEffect 4s linear infinite 2.2s;
             pointer-events: none;
         }
 
@@ -161,7 +168,13 @@
             50% { transform: scale(1.02); }
         }
 
-        /* Анимация движения света (слева направо) */
+        /* Появление сканера */
+        @keyframes showScanner {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Движение света */
         @keyframes scanEffect {
             0% { background-position: 200% 0; }
             100% { background-position: -100% 0; }
@@ -172,7 +185,7 @@
 
     <div class="logo-container">
         
-        <!-- Обертка для иконки, чтобы применить к ней маску -->
+        <!-- Обертка для иконки -->
         <div class="icon-wrapper">
             <img src="icon.png" class="logo-icon" alt="Mega-Kom Icon">
         </div>

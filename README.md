@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light">
-    <title>Мега-Ком — Выразительный блик</title>
+    <title>Мега-Ком — Сканирование по контуру</title>
     
     <style>
         /* --- ПОДКЛЮЧАЕМ ВАШ ШРИФТ --- */
@@ -32,52 +32,58 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            
+            padding: 10px 20px;
+            animation: pulseFinal 4s ease-in-out 2s infinite;
+        }
+
+        /* --- ИКОНКА И ЕЕ СКАНИРОВАНИЕ --- */
+        .icon-wrapper {
             position: relative;
-            overflow: hidden; /* Обрезаем блик по краям */
-            padding: 10px 20px; 
-
-            animation: pulseFinal 3s ease-in-out 2s infinite;
+            height: 65px;
+            display: flex;
+            align-items: center;
         }
 
-        /* --- ВЫРАЗИТЕЛЬНЫЙ БЛИК --- */
-        .logo-container::after {
-            content: '';
-            position: absolute;
-            top: -20%;
-            left: -150%; 
-            width: 60%; /* Сделали блик шире */
-            height: 140%; /* Чуть выше логотипа для лучшего эффекта */
-            
-            /* Более плотный и яркий градиент */
-            background: linear-gradient(
-                90deg,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.9) 50%, /* Яркость 90% */
-                rgba(255, 255, 255, 0) 100%
-            );
-            transform: skewX(-25deg); 
-            pointer-events: none; 
-            
-            /* Эффект наложения (делает черные буквы светлее в момент прохода) */
-            mix-blend-mode: overlay; 
-            /* Легкое размытие, чтобы блик был мягким */
-            filter: blur(3px); 
-
-            /* Запускаем чуть чаще (каждые 3 секунды) */
-            animation: shine 3s infinite 2s; 
-        }
-
-        /* --- ИКОНКА --- */
         .logo-icon {
             height: 65px; 
             width: auto;
             opacity: 0;
-            filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.1));
             animation: slideInLeft 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
-        /* --- ТЕКСТ --- */
+        /* Слой света поверх иконки, который повторяет её форму */
+        .icon-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            
+            /* Тонкая светящаяся линия */
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                transparent 42%, 
+                rgba(255, 255, 255, 1) 50%, 
+                transparent 58%, 
+                transparent 100%
+            );
+            background-size: 300% 100%;
+            background-position: 200% 0;
+            
+            /* МАГИЯ: Маскируем свет формой самой картинки. 
+               Свет будет виден ТОЛЬКО там, где есть непрозрачные пиксели */
+            -webkit-mask-image: url('icon.png');
+            mask-image: url('icon.png');
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-position: center;
+            
+            animation: scanEffect 4s linear infinite 2s;
+            pointer-events: none;
+        }
+
+        /* --- ТЕКСТ И ЕГО СКАНИРОВАНИЕ --- */
         .logo-text {
             display: flex;
             font-size: 48px; 
@@ -86,12 +92,47 @@
             font-weight: bold;
             line-height: 1;
             letter-spacing: -0.5px; 
+            position: relative; 
         }
 
         .logo-text span {
             display: inline-block;
             opacity: 0;
             animation: assembleLetter 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        /* Слой сканирования для текста (клонируем текст для наложения) */
+        .logo-text::after {
+            content: 'Мега-Ком';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            font-family: 'Averta Cyrillic', sans-serif;
+            font-size: 48px;
+            font-weight: bold;
+            letter-spacing: -0.5px;
+            line-height: 1;
+            white-space: nowrap;
+            
+            /* Тот же градиент света */
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                transparent 42%, 
+                rgba(255, 255, 255, 1) 50%, 
+                transparent 58%, 
+                transparent 100%
+            );
+            background-size: 300% 100%;
+            background-position: 200% 0;
+            
+            /* Обрезаем градиент ровно по форме букв */
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            
+            animation: scanEffect 4s linear infinite 2s;
+            pointer-events: none;
         }
 
         /* Задержки букв */
@@ -120,18 +161,21 @@
             50% { transform: scale(1.02); }
         }
 
-        /* --- АНИМАЦИЯ БЛИКА --- */
-        @keyframes shine {
-            0% { left: -150%; }
-            20% { left: 150%; } /* Немного замедлили проход для выразительности */
-            100% { left: 150%; } 
+        /* Анимация движения света (слева направо) */
+        @keyframes scanEffect {
+            0% { background-position: 200% 0; }
+            100% { background-position: -100% 0; }
         }
     </style>
 </head>
 <body>
 
     <div class="logo-container">
-        <img src="icon.png" class="logo-icon" alt="Mega-Kom Icon">
+        
+        <!-- Обертка для иконки, чтобы применить к ней маску -->
+        <div class="icon-wrapper">
+            <img src="icon.png" class="logo-icon" alt="Mega-Kom Icon">
+        </div>
 
         <div class="logo-text">
             <span>М</span>
@@ -143,6 +187,7 @@
             <span>о</span>
             <span>м</span>
         </div>
+        
     </div>
 
 </body>
